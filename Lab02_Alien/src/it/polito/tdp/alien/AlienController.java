@@ -17,6 +17,10 @@ import javafx.scene.control.TextField;
 
 public class AlienController {
 	
+	private String[] paroleAgg;
+	private AlienDictionary alienDictionary = new AlienDictionary();
+	
+	
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -43,13 +47,43 @@ public class AlienController {
     
     @FXML
     void doTranslate(ActionEvent event) {
-    	    	
+    	paroleAgg = txtWord.getText().split(" ");
+    	String alienWord ;
+    	String translation;
+    	
+    	txtWord.clear();
+    	txtResult.clear();
+    	
+    	if(paroleAgg.length == 2) {
+    		alienWord = paroleAgg[0].toLowerCase();
+    		translation = paroleAgg[1].toLowerCase();
+    	
+    		if(alienWord.matches("[a-zA-Z]+")&& translation.matches("[a-zA-Z]+")) {
+    			alienDictionary.addWord(alienWord, translation);
+    		}
+    	}
+    	else if (paroleAgg.length == 1){
+    		alienWord = paroleAgg[0].toLowerCase();
+    		if(alienWord.contains("?"))
+    		alienWord.replaceFirst("?", ".");
+    		
+    		if(alienWord.matches("[a-zA-Z]+")) {
+    			if(alienDictionary.translateWord(alienWord)!=null)
+    				txtResult.setText(alienDictionary.translateWord(alienWord));
+    		}
+    		else
+    			txtResult.setText("Parola non presente!");
+    	}
+    		
+    	
     }
     
     
     @FXML
     void doReset(ActionEvent event) {
-
+    	txtWord.clear();
+    	txtResult.clear();
+    	alienDictionary.cancellaDizionario();
     }
     
 }
