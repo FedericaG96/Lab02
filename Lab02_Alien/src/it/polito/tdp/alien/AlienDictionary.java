@@ -30,13 +30,11 @@ public class AlienDictionary {
 	public String translateWord(String alienWord) {
 		
 		numRis = 0;
-		if(alienWord.contains(".")) {
-			
-		}
+		
 		WordEnhanced w = new WordEnhanced (alienWord);
 		for(WordEnhanced p : parole) {
 			if(w.equals(p)==true) {
-				return p.getTanslation();
+				return p.getTranslation();
 			}
 		}
 		return null;
@@ -44,5 +42,31 @@ public class AlienDictionary {
 	
 	public void cancellaDizionario() {
 		parole.clear();
+	}
+
+	public String translateWordWildCard(String alienWildCard) {
+		
+		// Utilizzo le regual expression di Java (posso usare stringa.matches())
+		// Sostituisco "?" con "."
+		// "." nelle regex indica un qualsiasi carattere
+		
+		alienWildCard = alienWildCard.replaceAll("\\?", ".");
+		int  matchCounter = 0;
+		String risultato = "";
+		//StringBuilder sb = new StringBuilder();
+		
+		for(WordEnhanced p : parole) {
+			if(p.compareWild(alienWildCard)) {
+				matchCounter++;
+				risultato += p.getTranslation() + "\n";
+			//	sb.append(p.getTranslation() + "\n");
+			}
+		}
+		
+		if (matchCounter != 0)
+			//return sb.toString();
+			return risultato;
+		else
+			return null;
 	}
 }

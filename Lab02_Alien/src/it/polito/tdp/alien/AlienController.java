@@ -58,27 +58,42 @@ public class AlienController {
     		alienWord = paroleAgg[0].toLowerCase();
     		translation = paroleAgg[1].toLowerCase();
     	
-    		if(alienWord.matches("[a-zA-Z]+")&& translation.matches("[a-zA-Z]+")) {
+    		if(alienWord.matches("[a-zA-Z]*")&& translation.matches("[a-zA-Z]*")) {
     			alienDictionary.addWord(alienWord, translation);
+    			txtResult.setText("La parola: " + alienWord + " traduzione: " + translation + " è stata inserita.");
+    		}
+    		else {
+    			txtResult.setText("Inserire solo caratteri alfabetici.");
+				return;
     		}
     	}
     	else if (paroleAgg.length == 1){
     		alienWord = paroleAgg[0].toLowerCase();
-    		if(alienWord.contains("?"))
-    		alienWord.replaceFirst("?", ".");
+    		String traduzione;
     		
-    		if(alienWord.matches("[a-zA-Z]+")) {
-    			if(alienDictionary.translateWord(alienWord)!=null)
-    				txtResult.setText(alienDictionary.translateWord(alienWord));
+    		if (!alienWord.matches("[a-zA-Z?]*")) {
+				txtResult.setText("Inserire solo caratteri alfabetici.");
+				return;
+			}
+    		
+    		if(alienWord.matches("[a-zA-Z?]*") && !alienWord.matches("[a-zA-Z]*")) {
+    			// Traduzione con WildCard
+    			traduzione = alienDictionary.translateWordWildCard(alienWord);
     		}
-    		else
-    			txtResult.setText("Parola non presente!");
-    	}
+    		else {
+    			// Traduzione classica
+    			traduzione = alienDictionary.translateWord(alienWord);
+    		}
     		
-    	
+    		if (traduzione != null) {
+    			txtResult.setText(traduzione);
+    		}
+    		else {
+    			txtResult.setText("Parola non presente nel dizionario!");
+    		}
+    	}
     }
-    
-    
+        
     @FXML
     void doReset(ActionEvent event) {
     	txtWord.clear();

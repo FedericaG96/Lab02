@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 public class WordEnhanced {
 
-
 	private String alienWord;
 	private LinkedList<String> translation = new LinkedList<String>();
 	private String traduzione;
@@ -21,7 +20,7 @@ public class WordEnhanced {
 	public String getAlienWord() {
 		return alienWord;
 	}
-	public String getTanslation() {
+	public String getTranslation() {
 		String list = "";
 		for(String s : translation) {
 			list += s+"\n";
@@ -30,8 +29,25 @@ public class WordEnhanced {
 	}
 	
 	public void addTranslation(String translations) {
-		translation.add(translations);
+		if (!translation.contains(translations)) {
+			translation.add(translations);
+		}
 	}
+	
+	public boolean compareWild(String alienWild) {
+		if (alienWord.matches(alienWild))
+			return true;
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((alienWord == null) ? 0 : alienWord.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -48,4 +64,6 @@ public class WordEnhanced {
 			return false;
 		return true;
 	}
+	
+	
 }
